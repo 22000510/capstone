@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "721965842654",
+    "project_id": "sleepmanager-1bac8",
+    "storage_bucket": "sleepmanager-1bac8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721965842654:android:e01002412808adabf5c24f",
+        "android_client_info": {
+          "package_name": "com.example.healthgraph"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsG7Xm-3GoyNuzl-hLuX5NZ-GRjdnd4v4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
