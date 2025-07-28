@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import '../service/health_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // provider/step_provider.dart
 
@@ -14,6 +15,19 @@ class StepProvider with ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
+
+  // 저장된 걸음 수를 불러와 _totalSteps에 할당하고 notifyListeners() 호출
+  Future<void> loadStepsFromStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    _totalSteps = prefs.getInt('today_steps') ?? 0;
+    notifyListeners();
+  }
+
+  // 걸음 수 저장하는 내부 함수
+  Future<void> _saveStepsToStorage(int steps) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('today_steps', steps);
+  }
 
   Future<void> fetchSteps() async {
     _isLoading = true;
@@ -31,6 +45,9 @@ class StepProvider with ChangeNotifier {
         }
         return sum;
       });
+
+      // 여기서 저장까지 같이
+      await _saveStepsToStorage(_totalSteps);
     } catch (e, stack) {
       print('fetchSteps 예외 발생: $e');
       print(stack);
@@ -39,7 +56,7 @@ class StepProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
-}
+  }
 
   Future<bool> requestPermission() async {
     return await _service.requestPermission();
