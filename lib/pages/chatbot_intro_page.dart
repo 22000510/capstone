@@ -5,15 +5,21 @@ import 'package:url_launcher/url_launcher.dart';
 class ChatbotIntroScreen extends StatelessWidget {
   const ChatbotIntroScreen({super.key});
 
-  // 카카오톡 채널 URL (예시)
-  final String kakaoChannelUrl = 'http://pf.kakao.com/_ssrFn'; // ← 여기 채널 주소로 바꾸세요
+  // 카카오톡 채널 ID (URL 뒤에 있는 고유 ID)
+  final String kakaoChannelId = '_ssrFn'; // ← 여기에 자신의 채널 ID로 바꾸세요
 
   Future<void> _launchKakaoChannel() async {
-    final uri = Uri.parse(kakaoChannelUrl);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    final Uri kakaoAppUri = Uri.parse('kakaotalk://plusfriend/home/$kakaoChannelId');
+    final Uri webUri = Uri.parse('https://pf.kakao.com/$kakaoChannelId');
+
+    if (await canLaunchUrl(kakaoAppUri)) {
+      // 카카오톡 앱이 설치되어 있으면 앱으로 열기
+      await launchUrl(kakaoAppUri);
+    } else if (await canLaunchUrl(webUri)) {
+      // 앱 없으면 웹으로 열기
+      await launchUrl(webUri, mode: LaunchMode.externalApplication);
     } else {
-      debugPrint('카카오 채널 열기 실패');
+      debugPrint('카카오톡 앱 및 웹 모두 열기 실패');
     }
   }
 
